@@ -57,6 +57,7 @@ obj-$(CONFIG_MACH_N30)			+= mach-n30.o
 obj-$(CONFIG_MACH_OTOM)			+= mach-otom.o
 obj-$(CONFIG_MACH_QT2410)		+= mach-qt2410.o
 obj-$(CONFIG_ARCH_SMDK2410)		+= mach-smdk2410.o
+obj-$(CONFIG_MACH_JZ2440)		+= mach-jz2440.o
 obj-$(CONFIG_MACH_TCT_HAMMER)		+= mach-tct_hammer.o
 obj-$(CONFIG_MACH_VR1000)		+= mach-vr1000.o
 
@@ -83,6 +84,7 @@ obj-$(CONFIG_MACH_SMDK2443)		+= mach-smdk2443.o
 # common bits of machine support
 
 obj-$(CONFIG_S3C24XX_SMDK)		+= common-smdk.o
+obj-$(CONFIG_S3C24XX_JZ)		+= common-jz2440.o
 obj-$(CONFIG_S3C24XX_SIMTEC_AUDIO)	+= simtec-audio.o
 obj-$(CONFIG_S3C24XX_SIMTEC_NOR)	+= simtec-nor.o
 obj-$(CONFIG_S3C24XX_SIMTEC_PM)		+= simtec-pm.o
