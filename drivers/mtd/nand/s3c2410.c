@@ -910,6 +910,8 @@ static void s3c2410_nand_init_chip(struct s3c2410_nand_info *info,
 		chip->bbt_options |= NAND_BBT_USE_FLASH;
 		chip->options |= NAND_SKIP_BBTSCAN;
 	}
+
+	chip->ecc.mode = NAND_ECC_NONE;
 }
 
 /**

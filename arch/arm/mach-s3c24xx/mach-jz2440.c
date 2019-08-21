@@ -115,16 +115,16 @@ static struct s3c2410fb_display jz2440_lcd_cfg __initdata = {
 	.width		= 240,
 	.height		= 320,
 
-	.pixclock	= 166667, /* HCLK 60 MHz, divisor 10 */
-	.xres		= 240,
-	.yres		= 320,
+	.pixclock	= 9000000000, /* HCLK 60 MHz, divisor 10 */
+	.xres		= 480,
+	.yres		= 272,
 	.bpp		= 16,
-	.left_margin	= 20,
-	.right_margin	= 8,
-	.hsync_len	= 4,
-	.upper_margin	= 8,
-	.lower_margin	= 7,
-	.vsync_len	= 4,
+	.left_margin	= 2,
+	.right_margin	= 2,
+	.hsync_len	= 41,
+	.upper_margin	= 2,
+	.lower_margin	= 2,
+	.vsync_len	= 10,
 };
 
 static struct s3c2410fb_mach_info jz2440_fb_info __initdata = {
@@ -144,7 +144,7 @@ static struct s3c2410fb_mach_info jz2440_fb_info __initdata = {
 	.gpdup_mask	= 0xffffffff,
 #endif
 
-	.lpcsel		= ((0xCE6) & ~7) | 1<<4,
+	//.lpcsel		= ((0xCE6) & ~7) | 1<<4,
 };
 
 static struct platform_device *jz2440_devices[] __initdata = {
@@ -175,9 +175,12 @@ static void __init jz2440_machine_init(void)
 
 	platform_add_devices(jz2440_devices, ARRAY_SIZE(jz2440_devices));
 	jz_machine_init();
+	//backlight on
+	writel((readl(S3C2410_GPBCON)&~(3))|1, S3C2410_GPBCON);
+	writel((readl(S3C2410_GPBDAT)|1),S3C2410_GPBDAT);
 }
 
-MACHINE_START(S3C2440, "JZ2440")
+MACHINE_START(JZ2440, "JZ2440")
 	/* Maintainer: Ben Dooks <ben-linux@fluff.org> */
 	.atag_offset	= 0x100,
 
