@@ -44,6 +44,7 @@
 
 #include "common.h"
 #include "common-jz2440.h"
+#include <linux/dm9000.h>
 
 static struct map_desc jz2440_iodesc[] __initdata = {
 	/* ISA IO Space map (memory space selected by A24) */
@@ -147,12 +148,41 @@ static struct s3c2410fb_mach_info jz2440_fb_info __initdata = {
 	//.lpcsel		= ((0xCE6) & ~7) | 1<<4,
 };
 
+/* DM9000AEP 10/100 ethernet controller */
+#define JZ2440_DM9K_BASE	(S3C2410_CS4 + 0x300)
+
+static struct resource jz2440_dm9k_resource[] = {
+	[0] = DEFINE_RES_MEM(JZ2440_DM9K_BASE, 4),
+	[1] = DEFINE_RES_MEM(JZ2440_DM9K_BASE + 4, 4),
+	[2] = DEFINE_RES_NAMED(IRQ_EINT7, 1, NULL, IORESOURCE_IRQ \
+						| IORESOURCE_IRQ_HIGHEDGE),
+};
+
+/*
+ * The DM9000 has no eeprom, and it's MAC address is set by
+ * the bootloader before starting the kernel.
+ */
+static struct dm9000_plat_data jz2440_dm9k_pdata = {
+	.flags		= (DM9000_PLATF_16BITONLY | DM9000_PLATF_NO_EEPROM),
+};
+
+static struct platform_device jz2440_device_eth = {
+	.name		= "dm9000",
+	.id		= -1,
+	.num_resources	= ARRAY_SIZE(jz2440_dm9k_resource),
+	.resource	= jz2440_dm9k_resource,
+	.dev		= {
+		.platform_data	= &jz2440_dm9k_pdata,
+	},
+};
+
 static struct platform_device *jz2440_devices[] __initdata = {
 	&s3c_device_ohci,
 	&s3c_device_lcd,
 	&s3c_device_wdt,
 	&s3c_device_i2c0,
 	&s3c_device_iis,
+	&jz2440_device_eth,
 };
 
 static void __init jz2440_map_io(void)
